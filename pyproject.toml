@@ -21,6 +21,9 @@ dev = [
 
 [tool.uv]
 package = false
+required-environments = [
+    "sys_platform == 'win32' and platform_machine == 'AMD64' and implementation_name == 'cpython'",
+]
 
 [tool.pytest.ini_options]
 addopts = "-ra -q"
