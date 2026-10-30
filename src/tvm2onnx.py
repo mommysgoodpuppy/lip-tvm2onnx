@@ -256,8 +256,10 @@ def build_onnx(weights: Mapping[str, np.ndarray]) -> onnx.ModelProto:
     graph = helper.make_graph(
         nodes,
         "lip_model",
-        [helper.make_tensor_value_info("input", TensorProto.FLOAT, [1, 2, 100, 100])],
-        [helper.make_tensor_value_info("output", TensorProto.FLOAT, [1, 30])],
+        # Dynamic batch: MIGraphX compiles a substantially faster graph when
+        # the batch dim is symbolic instead of a static 1.
+        [helper.make_tensor_value_info("input", TensorProto.FLOAT, ["batch", 2, 100, 100])],
+        [helper.make_tensor_value_info("output", TensorProto.FLOAT, ["batch", 30])],
         initializer=[
             numpy_helper.from_array(weights[name], name) for name in EXPECTED_SHAPES
         ],

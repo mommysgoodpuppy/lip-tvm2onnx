@@ -30,7 +30,7 @@ Existing output files are preserved unless `--force` is supplied.
 The generated model has this interface:
 
 ```text
-input   float32 [1, 2, 100, 100]
+input   float32 ["batch", 2, 100, 100]
 
 Conv 5x5, 2  -> 20  + ReLU + MaxPool 2x2
 Conv 5x5, 20 -> 48  + ReLU + MaxPool 2x2
@@ -39,8 +39,10 @@ Flatten
 Dense 25600  -> 500
 Dense 500    -> 30  + ReLU
 
-output  float32 [1, 30]
+output  float32 ["batch", 30]
 ```
+
+The batch dim is a dynamic `dim_param`
 
 The expected tensor names and shapes are defined in `src/tvm2onnx.py`.
 
